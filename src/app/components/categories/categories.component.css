@@ -1,0 +1,4 @@
+button:disabled .fa-angle-left,
+button:disabled .fa-angle-right {
+  color: #a0a0a0;
+}

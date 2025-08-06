@@ -1,0 +1,11 @@
+<dialog #logoutModal class="modal">
+  <div class="modal-box">
+    <p class="py-4">Are you sure you want to log out?</p>
+    <div class="modal-action">
+      <form method="dialog" class="flex gap-2">
+        <button class="btn bg-black text-white" (click)="handleConfirm()">Log Out</button>
+        <button class="btn" (click)="close()">Cancel</button>
+      </form>
+    </div>
+  </div>
+</dialog>

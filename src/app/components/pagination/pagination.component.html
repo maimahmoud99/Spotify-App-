@@ -1,0 +1,28 @@
+<!-- زر السابق -->
+<button
+  class="p-1 px-2 text-xl mr-1 bg-transparent border-mainColor border-2 cursor-pointer"
+  [ngClass]="{ disabled: currentPage === 1 }"
+  (click)="pageClicked(currentPage - 1)">
+  <i class="fa-solid fa-angle-left text-xl"></i>
+</button>
+
+<!-- الأرقام -->
+<button
+  *ngFor="let page of pages"
+  (click)="pageClicked(page)"
+  class="p-1 px-2 text-xl mr-1 border-mainColor border-2 rounded"
+  [ngClass]="{
+    'bg-mainColor text-white': page === currentPage,
+    'bg-transparent text-black': page !== currentPage
+  }"
+  [disabled]="page === '...'">
+  {{ page }}
+</button>
+
+<!-- زر التالي -->
+<button
+  class="p-1 px-2 text-xl mr-1 bg-transparent border-mainColor border-2 cursor-pointer"
+  [ngClass]="{ disabled: currentPage === totalPages }"
+  (click)="pageClicked(currentPage + 1)">
+  <i class="fa-solid fa-angle-right text-xl"></i>
+</button>

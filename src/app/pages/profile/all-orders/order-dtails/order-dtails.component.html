@@ -1,0 +1,72 @@
+<div class="flex flex-col">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-5">
+    <div class="flex flex-col gap-2">
+      <span class="text-md font-inter text-gray-700">
+        Order 
+        <span class="font-bold text-gold">#{{ selectedOrder?.orderNumber }}</span>
+        was placed on 
+        <span class="font-bold text-gold">{{ selectedOrder?.createdAt | date: 'medium' }}</span> 
+        and is currently 
+        <span class="font-bold text-gold">{{ selectedOrder?.status }}</span>
+      </span>
+      <span class="font-inter font-bold text-gold">
+        Address: 
+        <span class="text-gray-700 font-normal">
+          {{ selectedOrder?.shippingAddress.address }}, 
+          {{ selectedOrder?.shippingAddress.city }}, 
+          {{ selectedOrder?.shippingAddress.country }}
+        </span>
+      </span>
+    </div>
+    <button class="btn bg-mainColor font-inter" [routerLink]="['/profile/all-orders']">Back to Orders</button>
+  </div>
+
+  <!-- Responsive Table -->
+  <div class="overflow-x-auto rounded-box border border-base-content/4 bg-base-100 max-h-120">
+    <table class="table table-zebra w-full min-w-[700px] border-collapse">
+      <!-- Head -->
+      <thead class="bg-gray-100">
+        <tr class="sticky top-0 bg-gray-100 z-10">
+          <th>No.</th>
+          <th>Item Image</th>
+          <th>Item Name</th>
+          <th class="hidden sm:table-cell">Base Price</th>
+          <th class="hidden md:table-cell">Size</th>
+          <th>Quantity</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+
+      <!-- Body -->
+      <tbody>
+        <tr *ngFor="let row of selectedOrder?.items; let i = index">
+          <th class="font-normal">{{ i + 1 }}</th>
+          <td>
+            <div class="mask mask-squircle h-12 w-12">
+              <img [src]="row.product.imageUrl" alt="Avatar" />
+            </div>
+          </td>
+          <td>{{ row.product.name.slice(0, 20) }}{{ row.product.name.length > 20 ? '...' : '' }}</td>
+          <td class="hidden sm:table-cell">$ {{ row.product.price }}</td>
+          <td class="hidden md:table-cell">{{ row.size }}</td>
+          <td>{{ row.quantity }}</td>
+          <td>$ {{ row.totalPriceItems }}</td>
+        </tr>
+      </tbody>
+    
+      <!-- Footer -->
+      <tfoot class="bg-gray-100">
+        <tr class="sticky bottom-0 bg-gray-100 z-10">
+          <th>Total</th>
+          <th></th>
+          <th></th>
+          <th class="hidden sm:table-cell"></th>
+          <th class="hidden md:table-cell"></th>
+          <th></th>
+          <th>${{ selectedOrder?.totalPrice }}</th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

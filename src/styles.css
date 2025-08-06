@@ -1,0 +1,105 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+@theme {
+  --color-mainColor: #e1eb58;
+  --color-secondColor: #f3f3f3;
+
+  --color-textcolor: #404040;
+  --color-gray: #838181;
+  --color-border: #b6b6b6;
+  --color-gold: #aaa51e;
+  --font-display: "Playfair Display";
+  --font-abhaya: "Abhaya Libre Medium";
+
+  --color-white: #ffffff;
+
+  --font-inria: "Inria Serif";
+  --font-inter: "Inter sans-serif";
+  --color-secandaryText: #aeadad;
+  --color-ternaryText: #666666;
+  --color-loginText: #9f9b1b;
+  /* cart page */
+  --color-cart: #4a4a4a;
+  --color-textColor: #3f3f3f;
+  --color-productBorder: #d4d4d4;
+  --color-inputColor: #c0bebe;
+  /* admin page */
+  --color-productTitle: #aaa51e;
+}
+* {
+  text-transform: capitalize;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+.fontInter {
+  font-family: "Inter", sans-serif;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.5;
+}
+
+/* ! cart page */
+.no-arrows::-webkit-inner-spin-button,
+.no-arrows::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.no-arrows {
+  -moz-appearance: textfield;
+}
+/* !admin page */
+/* إخفاء السهم الافتراضي */
+.custom-select {
+  -webkit-appearance: none; /* Chrome, Safari, Opera */
+  -moz-appearance: none; /* Firefox */
+  appearance: none; /* جميع المتصفحات الحديثة */
+  padding-right: 2rem; /* نترك مساحة للسهم الجديد */
+}
+
+/* إضافة السهم الجديد */
+.custom-select + i {
+  pointer-events: none; /* تعطيل التفاعل مع الأيقونة */
+}
+
+/* تخصيص الأيقونة (الحجم واللون) */
+.custom-select + i {
+  font-size: 1.2rem; /* زيادة حجم السهم */
+  color: #888; /* تغيير اللون */
+  transition: color 0.3s; /* إضافة تأثير للتغيير عند التفاعل */
+}
+
+/* تغيير اللون عند التفاعل مع الـ select */
+.custom-select:focus + i {
+  color: #333; /* تغيير اللون عند التركيز */
+}
+
+/* .hidden{
+    display: none;
+  } */
+
+  /* .toast-center-center {
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  position: fixed !important;
+  z-index: 9999;
+} */
+.toast-top-center {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin: 0 auto;
+  left: 0 !important;
+  right: 0 !important;
+  border-radius: 0; 
+}
+
+  .router-link-active {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-weight:700;
+  color: black;
+}

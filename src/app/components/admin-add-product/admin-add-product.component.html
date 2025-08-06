@@ -1,0 +1,177 @@
+<app-header></app-header>
+  
+<div class="min-h-screen bg-gray-100 p-1 pb-10 mb-10">
+
+  <div class="max-w-4xl min-h-[90vh] mx-auto bg-white p-8 rounded-lg shadow-md font-inria font-light mt-10">
+    <h1 class="font-display text-productTitle mb-5 text-3xl font-semibold">Add Product:</h1>
+
+    <form class="space-y-2">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="col-span-1">
+          <!-- name -->
+          <label   class="block text-sm font-medium text-ternaryText">Product Name</label>
+          <input
+          [(ngModel)]="productName"  
+          [ngModelOptions]="{standalone: true}"
+           placeholder="Sneakers Shoes" type="text" class="mt-1 block w-full px-3 py-2 border
+            border-gray-300 rounded-md shadow-sm focus:outline-none" />
+        </div>
+
+
+         
+         
+        <div class="grid grid-cols-2 gap-4 col-span-1">
+          <div class="relative">
+            <label class="block text-sm sm:text-sm font-medium text-ternaryText whitespace-nowrap">Product Category</label>
+            <div class="relative">
+              <select [(ngModel)]="selectedCategory" name="category" [ngModelOptions]="{standalone: true}" 
+                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm custom-select">
+                    <option *ngFor="let cat of productCategories" [value]="cat.split('|')[1]">
+                       {{ cat.split('|')[0] }}
+                    </option>
+                </select>
+              <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+            </div>
+          </div>
+
+          <div class="relative">
+            <label class="block text-sm font-medium text-ternaryText sm:text-sm">Product Subcategory</label>
+            <div class="relative">
+              <select [(ngModel)]="selectedSubcategory" name="subcategory" [ngModelOptions]="{standalone: true}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none custom-select">
+                <option *ngFor="let sub of productSubcategories" [value]="sub">{{ sub }}</option>
+              </select>
+              <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="col-span-1">
+          <label class="block text-sm font-medium text-ternaryText">Product Brand</label>
+          <input [(ngModel)]="productBrand"
+          [ngModelOptions]="{standalone: true}"
+           placeholder="Nike" type="text" class="mt-1 block w-full px-3 py-2 border
+           border-gray-300 rounded-md shadow-sm focus:outline-none" />
+        </div>
+  
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 col-span-1">
+          <div>
+            <label class="block text-sm font-medium text-ternaryText">Product Price</label>
+            <input [(ngModel)]="productPrice"
+            [ngModelOptions]="{standalone: true}"
+            type="text" placeholder="650.0" class="mt-1 block w-full px-3 py-2 border
+             border-gray-300 rounded-md shadow-sm focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-ternaryText">Product Material</label>
+            <div class="relative">
+              <select [(ngModel)]="selectedMaterial" name="material" [ngModelOptions]="{standalone: true}" class="mt-1 block w-full px-3 py-2 border
+               border-gray-300 rounded-md shadow-sm focus:outline-none custom-select">
+                <option *ngFor="let sub of productMaterials" [value]="sub">{{ sub }}</option>
+              </select>
+              <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- size -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="relative col-span-1">
+          <label class="block text-sm font-medium text-ternaryText">Product Size</label>
+          <div class="relative">
+            <select [(ngModel)]="selectedSize" name="size" [ngModelOptions]="{standalone: true}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none custom-select">
+              <option *ngFor="let sub of productSizes" [value]="sub">{{ sub }}</option>
+            </select>
+            <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+          </div>
+        </div>
+
+        <div class="relative col-span-2">
+          <label class="block text-sm font-medium text-ternaryText">Size Value</label>
+          <div class="mt-1 w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm flex items-center gap-4 h-12">
+            <div class="w-30 h-8 bg-mainColor border-inputColor border-1 text-textColor rounded-lg flex items-center justify-between p-3 gap-5" disabled>
+              <div class="flex gap-0">
+                <span>{{ selectedSize }}</span>
+              </div>
+              <img src="assets/images/exit.svg" class="h-5">
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!-- ! color -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="relative col-span-1">
+          <label class="block text-sm font-medium text-ternaryText">Product Color</label>
+          <div class="relative">
+            <select [(ngModel)]="selectedColor" name="size" [ngModelOptions]="{standalone: true}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none custom-select">
+              <option *ngFor="let sub of productColor" [value]="sub">{{ sub }}</option>
+            </select>
+            <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+          </div>
+        </div>
+
+        <div class="relative col-span-2">
+          <label class="block text-sm font-medium text-ternaryText">Color Value</label>
+          <div class="mt-1 w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm flex items-center gap-4 h-12">
+            <div class="w-30 h-8 bg-textcolor border-inputColor border-1 text-white rounded-lg flex items-center justify-between p-3 gap-5" disabled>
+              <div class="flex gap-0">
+                <span>{{ selectedColor }}</span>
+              </div>
+              <img src="assets/images/exit.svg" class="h-5">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-6 md:grid-cols-2 gap-4 w-full">
+        <div class="col-span-6 w-full">
+          <label class="block text-sm font-medium text-ternaryText">Image URL</label>
+          <input
+            [(ngModel)]="imageUrl"
+            [ngModelOptions]="{ standalone: true }"
+            placeholder="https://example.com/image.jpg"
+            type="text"
+            class="mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 px-3 py-2"
+          />
+        </div>
+      </div>
+      
+      
+<!-- description -->
+      <div>
+        <label class="block text-sm font-medium text-ternaryText">Description</label>
+        <textarea [(ngModel)]="productDescription"
+        [ngModelOptions]="{standalone: true}"
+         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none resize-none" rows="4"
+          placeholder="Top Men Sneakers Shoes in Cairo Egypt.."></textarea>
+      </div>
+<!-- submit button -->
+      <div class="flex justify-center">
+        <button type="submit" class="w-1/5 flex justify-center py-2 px-4 border 
+        border-transparent rounded-md shadow-sm text-sm font-medium text-white
+         bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer"
+         (click)="addProduct()">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Success Message -->
+<div *ngIf="showSuccess" class="fixed top-0 left-0 right-0 z-50 bg-green-500 text-white py-2 px-4 text-center">
+  <p>{{ successMessage }}</p>
+</div>
+
+<!-- Error Message -->
+<div *ngIf="showError" class="fixed top-0 left-0 right-0 z-50 bg-red-500 text-white py-2 px-4 text-center">
+  <p>{{ errorMessage }}</p>
+</div>
+
+<!-- Warning Message -->
+<div *ngIf="showWarning" class="fixed top-0 left-0 right-0 z-50 bg-yellow-500 text-white py-2 px-4 text-center">
+  <p>{{ warningMessage }}</p>
+</div>
+
+<app-footer></app-footer>

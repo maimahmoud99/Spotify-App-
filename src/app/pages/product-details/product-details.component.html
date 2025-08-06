@@ -1,0 +1,563 @@
+<app-header></app-header>
+<div class="mx-6 pt-15 md:pt-5 lg:pt-5 m-auto md:ms-12 font-display">
+  <ng-container *ngIf="isLoading; else loadedContent">
+    <div class="w-full flex justify-center items-center">
+      <app-loading></app-loading>
+    </div>
+  </ng-container>
+  <ng-template #loadedContent>
+    <div class="text-gray">
+      {{ products?.data?.product?.category?.name }}
+      <ng-container
+        *ngIf="products?.data?.product?.category?.name === 'clothes'"
+      >
+        <i class="fa-solid fa-angle-right m-3"></i>
+        {{ products?.data?.product?.subCategory }}
+      </ng-container>
+      <i class="fa-solid fa-angle-right m-3"></i>
+      {{ products?.data?.product?.name }}
+    </div>
+
+    <div
+      class="grid grid-cols-1 mt-4 lg:mt-4 md:grid-cols-2 justify-center gap-15 md:gap-8 lg:gap-0"
+    >
+      <div
+        class="col-span-1 rounded-lg w-full flex justify-center text-center align-middle"
+      >
+        <ng-container
+          *ngIf="
+            products?.data?.product?.category?.name === 'supplement';
+            else normalImage
+          "
+        >
+          <img
+            src="{{ products?.data?.product?.imageUrl }}"
+            class="w-[70%] rounded-lg md:w-[95%] lg:w-[50%]"
+            (error)="handleImageError($event)"
+          />
+        </ng-container>
+        <ng-template #normalImage>
+          <img
+            src="{{ products?.data?.product?.imageUrl }}"
+            (error)="handleImageError($event)"
+            class="w-[70%] rounded-lg md:w-[95%] lg:w-[70%] h-auto"
+          />
+        </ng-template>
+      </div>
+
+      <div class="text-textcolor flex flex-col col-span-1 mx-6 lg:mx-0 gap-4">
+        <div class="flex gap-2 h-7 w-7 items-center">
+          <img src="assets/images/brand-image.png" alt="" />
+          <span class="pt-1 text-lg">{{ products?.data?.product?.brand }}</span>
+        </div>
+        <p class="text-2xl md:text-xl lg:text-3xl font-semibold text-textcolor">
+          {{ products?.data?.product?.name }}
+        </p>
+
+        <div class="grid gap-3 text-2xl lg:text-[28px] text-gold">
+          <div class="flex gap-5">
+            <span class="lg:w-32">Price</span>
+            <span class="lg:w-12">:</span>
+            <span class="font-abhaya text-textcolor"
+              >$ {{ products?.data?.product?.price }}</span
+            >
+          </div>
+
+          <ng-container
+            *ngIf="products?.data?.product?.category?.name !== 'supplement'"
+          >
+            <div class="flex gap-5">
+              <span class="lg:w-32">Color</span>
+              <span class="lg:w-12">:</span>
+              <!-- <span class="font-abhaya text-textcolor">
+  {{ isArray(products?.data?.product?.color) ? products?.data?.product?.color.join(', ') : products?.data?.product?.color }}
+</span> -->
+              <span class="font-abhaya text-textcolor">{{
+                getColorText()
+              }}</span>
+            </div>
+
+            <ng-container
+              *ngIf="products?.data?.product?.category?.name !== 'equipment'"
+            >
+              <div class="flex gap-5">
+                <span class="lg:w-32">Size</span>
+                <span class="lg:w-12">:</span>
+                <span
+                  class="font-abhaya text-textcolor flex gap-1 sm:gap-1 md:gap-1 lg:gap-1"
+                >
+                  <button
+                    *ngFor="let item of products?.data?.product?.size_range"
+                    (click)="selectSize(item)"
+                    [ngClass]="{
+                      'bg-black text-white border-gold': selectedSize === item,
+                      'bg-white text-[#2F2F2F] border-[#999999]':
+                        selectedSize !== item
+                    }"
+                    class="cursor-pointer border rounded-full px-3 md:px-3 text-[15px] lg:text-[18px] font-abhaya py-1 transition duration-300"
+                  >
+                    {{ item }}
+                  </button>
+                </span>
+              </div>
+            </ng-container>
+
+            <div class="flex gap-5">
+              <span class="lg:w-32">Material</span>
+              <span class="lg:w-12">:</span>
+              <span class="font-abhaya text-textcolor">{{
+                products?.data?.product?.material
+              }}</span>
+            </div>
+          </ng-container>
+
+          <div class="flex gap-5">
+            <span class="lg:w-32">Stock</span>
+            <span class="lg:w-12">:</span>
+            <ng-container *ngIf="availableStock !== null; else noSizeSelected">
+              <span
+                *ngIf="availableStock === 0 || isCompletelyOutOfStock()"
+                class="font-abhaya text-red-600"
+              >
+                {{
+                  isCompletelyOutOfStock()
+                    ? products?.data?.product?.category?.name ===
+                        "supplement" ||
+                      products?.data?.product?.category?.name === "equipment"
+                      ? "Out of stock."
+                      : "Out of stock in all sizes."
+                    : products?.data?.product?.category?.name ===
+                        "supplement" ||
+                      products?.data?.product?.category?.name === "equipment"
+                    ? "Out of stock"
+                    : "Out of stock for this size."
+                }}
+              </span>
+
+              <span
+                *ngIf="
+                  availableStock > 0 &&
+                  availableStock <= 3 &&
+                  !isCompletelyOutOfStock()
+                "
+                class="font-abhaya text-orange-500"
+              >
+                Only {{ availableStock }} left in stock!
+              </span>
+
+              <span
+                *ngIf="availableStock > 3 && !isCompletelyOutOfStock()"
+                class="font-abhaya text-textcolor"
+              >
+                {{ availableStock }} in stock
+              </span>
+            </ng-container>
+
+            <ng-template #noSizeSelected>
+              <span class="font-abhaya"> Please select a size </span>
+            </ng-template>
+          </div>
+
+          <!-- Quantity selector -->
+          <div class="flex gap-5">
+            <span class="lg:w-32">Quantity</span>
+            <span class="lg:w-12">:</span>
+            <div
+              class="w-full md:w-30 px-3 h-10 border text-center rounded flex justify-between items-center p-2 border-inputColor text-textColor"
+            >
+              <i
+                class="fa-solid fa-minus text-lg cursor-pointer"
+                [class.opacity-50]="quantity <= 1"
+                (click)="decreaseQuantity()"
+              ></i>
+
+              <input
+                type="number"
+                min="1"
+                [value]="quantity"
+                readonly
+                class="w-10 text-center pb-2 outline-none no-arrows"
+              />
+
+              <!-- <i
+  class="fa-solid fa-plus text-lg cursor-pointer"
+  [class.text-gray-400]="(quantity + quantityInCart()) >= (originalStock ?? 0)"
+  [class.cursor-not-allowed]="(quantity + quantityInCart()) >= (originalStock ?? 0)"
+  [style.pointer-events]="(quantity + quantityInCart()) >= (originalStock ?? 0) ? 'none' : 'auto'"
+  (click)="increaseQuantity()"
+></i> -->
+              <div class="relative group flex items-center justify-center">
+                <i
+                  class="fa-solid fa-plus text-lg cursor-pointer"
+                  [class.text-gray-400]="
+                    quantity >= availableStock ||
+                    (!selectedSize && requiresSize)
+                  "
+                  [class.cursor-not-allowed]="
+                    quantity >= availableStock ||
+                    (!selectedSize && requiresSize)
+                  "
+                  [style.pointer-events]="
+                    quantity >= availableStock ||
+                    (!selectedSize && requiresSize)
+                      ? 'none'
+                      : 'auto'
+                  "
+                  (click)="increaseQuantity()"
+                ></i>
+
+                <div
+                  *ngIf="!selectedSize && requiresSize"
+                  class="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50 whitespace-nowrap"
+                >
+                  Please select a size first
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-3 mt-4">
+          <!-- 
+          <button
+            class="text-cart rounded-lg p-2 px-4 w-3/4 lg:w-1/2 text-lg"
+            (click)="addToCart()"
+            [disabled]="availableStock === 0 || isOutOfStock()"
+            [ngClass]="{
+              'bg-gray-400 cursor-not-allowed':
+                availableStock === 0 || isOutOfStock(),
+              'bg-mainColor cursor-pointer': !(
+                availableStock === 0 || isOutOfStock()
+              )
+            }"
+          >
+            {{
+              availableStock === 0
+                ? "Add to cart"
+                : isOutOfStock()
+                ? "Out of stock"
+                : "Add to cart"
+            }}
+          </button> -->
+          <button
+            class="text-cart rounded-lg p-2 px-4 w-3/4 lg:w-1/2 text-lg"
+            (click)="addToCart()"
+            [disabled]="
+              availableStock === 0 || isOutOfStock() || isCompletelyOutOfStock()
+            "
+            [ngClass]="{
+              'bg-gray-400 cursor-not-allowed':
+                availableStock === 0 ||
+                isOutOfStock() ||
+                isCompletelyOutOfStock(),
+              'bg-mainColor cursor-pointer': !(
+                availableStock === 0 ||
+                isOutOfStock() ||
+                isCompletelyOutOfStock()
+              )
+            }"
+          >
+            {{
+              isCompletelyOutOfStock()
+                ? "Out of stock"
+                : isOutOfStock()
+                ? "Out of stock"
+                : "Add to cart"
+            }}
+          </button>
+
+          <div
+            class="rounded-lg border-2 border-gold w-10 h-10 flex justify-center items-center cursor-pointer"
+            (click)="togglefav()"
+          >
+            <i
+              class="fa-regular fa-heart text-xl transition-all duration-700"
+              [ngClass]="{
+                'opacity-0 scale-0': isFav,
+                'opacity-100 scale-100': !isFav
+              }"
+            ></i>
+            <i
+              class="fa-solid fa-heart text-red-700 text-xl absolute transition-all duration-700"
+              [ngClass]="{
+                'opacity-100 scale-100': isFav,
+                'opacity-0 scale-0': !isFav
+              }"
+            ></i>
+          </div>
+
+          <ng-container *ngIf="isAdmin()">
+            <div
+              class="rounded-lg border-2 border-gold w-10 h-10 flex justify-center items-center cursor-pointer"
+            >
+              <i
+                (click)="toggleEdit()"
+                class="fa-regular fa-pen-to-square text-xl text-gold"
+              ></i>
+            </div>
+            <div
+              class="rounded-lg border-2 border-[#EC4967] w-10 h-10 flex justify-center items-center cursor-pointer"
+            >
+              <i
+                (click)="togleDel()"
+                class="fa-regular fa-trash-can text-xl text-[#EC4967]"
+              ></i>
+            </div>
+          </ng-container>
+
+          <div
+            *ngIf="showConfirmModal"
+            class="fixed inset-0 bg-black/30 flex justify-center items-center"
+          >
+            <div
+              class="bg-white rounded-lg p-6 w-96 h-52 flex flex-col justify-center items-center"
+            >
+              <h3 class="text-center text-2xl mb-4">
+                Are you Sure you want Delete?
+              </h3>
+              <div class="flex justify-between gap-5">
+                <button
+                  (click)="cancelDelete()"
+                  class="bg-textColor text-white px-10 py-2 rounded-lg cursor-pointer"
+                >
+                  No
+                </button>
+                <button
+                  (click)="deleteCurrentProduct()"
+                  class="bg-red-400 text-white px-10 py-2 rounded-lg cursor-pointer"
+                >
+                  Yes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <span
+          *ngIf="
+            !selectedSize &&
+            showSizeMessage &&
+            (products?.data?.product?.category?.name === 'clothes' ||
+              products?.data?.product?.category?.name === 'shoes')
+          "
+          class="text-sm text-left text-red-600"
+        >
+          Please select a size before adding to cart.
+        </span>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+<div class="mt-18 flex flex-col gap-5 lg:gap-7">
+  <h1
+    class="text-center md:text-start md:ms-15 lg:ms-24 text-2xl lg:text-3xl text-gold font-display font-semibold"
+  >
+    Description
+  </h1>
+  <div class="bg-secondColor w-full h-auto lg:p-10">
+    <p
+      class="text-[#707070] font-abhaya lg:pl-14 lg:px-0 lg:text-xl lg:leading-8 pr-8"
+    >
+      {{ products?.data?.product?.description }}
+    </p>
+  </div>
+</div>
+
+<div class="mt-12 flex flex-col gap-5 lg:gap-12">
+  <h1
+    class="lg:self-start text-center md:text-start md:ms-15 lg:ms-24 text-2xl lg:text-3xl text-gold font-display font-semibold"
+  >
+    Reviews
+  </h1>
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-[90%] px-5 lg:px-0 max-w-6xl mx-auto"
+  >
+    <div
+      *ngFor="let review of reviews"
+      class="border drop-shadow-xl font-display rounded-3xl border-[#BBBBBB] h-auto w-full flex flex-col gap-2 p-6"
+    >
+      <p class="text-xl text-[#2F2F2F] font-medium">
+        {{ review?.user?.firstName }} {{ review?.user?.lastName }}
+      </p>
+      <img
+        class="w-32"
+        [src]="'assets/images/stars-' + +review?.rating + '.svg'"
+        alt="rating stars"
+      />
+      <span class="border border-solid border-[#e3e3e3] w-full"></span>
+      <p class="pt-2 p-1 text-textcolor">{{ review?.review }}</p>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="!hasReviewed"
+  class="mt-18 flex flex-col gap-7 w-full h-auto pt-10 bg-secondColor justify-center"
+>
+  <h1
+    class="text-center text-2xl md:text-start md:ms-15 lg:ms-24 lg:text-3xl text-gold font-display font-semibold"
+  >
+    Add Your Review
+  </h1>
+
+  <form
+    [formGroup]="Form"
+    (ngSubmit)="submit()"
+    class="w-[92%] lg:w-3/4 h-auto grid grid-cols-1 md:grid-cols-2 m-5 justify-items-center place-items-center bg-white rounded-lg mx-auto px-10 md:px-8 lg:ps-15 pt-10 pb-10 border border-solid border-[#ADADAD]"
+  >
+    <div class="font-display flex flex-col mx-auto w-full gap-4 justify-center">
+      <!-- <div class="form-group">
+        <label class="text-xl text-[#7F7F7F] ms-1">Name</label>
+        <input
+          type="text"
+          formControlName="user"
+          class="text-lg font-abhaya rounded-lg border focus:border-gold focus:outline-none border-solid border-[#D6D6D6] p-4 text-textcolor w-full h-12 mt-2"
+        />
+        <div class="h-5 mt-1">
+          <ng-container *ngIf="Form.get('user')?.value && !NameValid">
+            <span class="text-sm text-left text-red-600">
+              Name should be more than 3 characters
+            </span>
+          </ng-container>
+          <ng-container *ngIf="!Form.get('user')?.value && submitted">
+            <span class="text-sm text-left text-red-600">Name is required!</span>
+          </ng-container>
+        </div>
+      </div> -->
+
+      <!-- <div class="form-group">
+        <label class="text-xl text-[#7F7F7F] ms-1">Email</label>
+        <input
+          type="text"
+          formControlName="reviewerEmail"
+          class="text-lg font-abhaya rounded-lg border border-solid focus:border-gold focus:outline-none border-[#D6D6D6] p-4 text-textcolor w-full h-12 mt-2"
+        />
+        <div class="h-5 mt-1">
+          <ng-container *ngIf="Form.get('reviewerEmail')?.value && !EmailValid">
+            <span class="text-sm text-left text-red-600">Email Is Invalid</span>
+          </ng-container>
+          <ng-container *ngIf="!Form.get('reviewerEmail')?.value && submitted">
+            <span class="text-sm text-left text-red-600">Email is required!</span>
+          </ng-container>
+        </div>
+      </div> -->
+
+      <div class="form-group">
+        <label class="text-xl text-[#7F7F7F] ms-1 mt-9">Description</label>
+        <textarea
+          formControlName="review"
+          class="text-lg font-abhaya rounded-lg h-80 border border-solid border-[#D6D6D6] focus:border-gold focus:outline-none p-4 text-textcolor w-full mt-7"
+          style="resize: none"
+        ></textarea>
+        <div class="h-5 mt-1">
+          <ng-container *ngIf="Form.get('review')?.invalid && submitted">
+            <span
+              class="text-sm text-left text-red-600"
+              *ngIf="Form.get('review')?.errors?.['required']"
+            >
+              Description is required!
+            </span>
+            <span
+              class="text-sm text-left text-red-600"
+              *ngIf="Form.get('review')?.errors?.['minlength']"
+            >
+              Review must be at least 3 characters!
+            </span>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="w-full px-10 md:px-0 md:w-[80%] lg:px-0 h-80 mt-9 bg-secondColor rounded-lg flex flex-col items-center justify-center font-display gap-1"
+    >
+      <p class="text-[#7F7F7F] text-xl mb-3">Your Rate</p>
+
+      <div class="flex items-center">
+        <input
+          type="radio"
+          id="rate5"
+          class="w-6 h-6 accent-gold"
+          formControlName="rating"
+          name="rating"
+          [value]="5"
+        />
+        <label for="rate5"
+          ><img src="assets/images/stars-5.svg" alt=""
+        /></label>
+      </div>
+
+      <div class="flex items-center">
+        <input
+          type="radio"
+          id="rate4"
+          class="w-6 h-6 accent-gold"
+          formControlName="rating"
+          name="rating"
+          [value]="1"
+        />
+        <label for="rate4"
+          ><img src="assets/images/stars-1.svg" alt=""
+        /></label>
+      </div>
+
+      <div class="flex items-center">
+        <input
+          type="radio"
+          id="rate3"
+          class="w-6 h-6 accent-gold"
+          formControlName="rating"
+          name="rating"
+          [value]="2"
+        />
+        <label for="rate3"
+          ><img src="assets/images/stars-2.svg" alt=""
+        /></label>
+      </div>
+
+      <div class="flex items-center">
+        <input
+          type="radio"
+          id="rate2"
+          class="w-6 h-6 accent-gold"
+          formControlName="rating"
+          name="rating"
+          [value]="3"
+        />
+        <label for="rate2"
+          ><img src="assets/images/stars-3.svg" alt=""
+        /></label>
+      </div>
+
+      <div class="flex items-center">
+        <input
+          type="radio"
+          id="rate1"
+          class="w-6 h-6 accent-gold"
+          formControlName="rating"
+          name="rating"
+          [value]="4"
+        />
+        <label for="rate1"
+          ><img src="assets/images/stars-4.svg" alt=""
+        /></label>
+      </div>
+
+      <div class="h-5 mt-1">
+        <ng-container *ngIf="!Form.get('rating')?.value && submitted">
+          <span class="text-sm text-left text-red-600">Rate is required!</span>
+        </ng-container>
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="p-3 bg-[#2A2A2A] w-[80%] lg:w-1/2 mt-6 text-white text-xl rounded-lg cursor-pointer mx-auto"
+    >
+      Submit
+    </button>
+  </form>
+</div>
+
+<app-footer></app-footer>

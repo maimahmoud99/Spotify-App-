@@ -1,0 +1,238 @@
+<app-header></app-header>
+
+<div class="min-h-screen bg-gray-100 p-1 pb-10 mb-10">
+  <div class="max-w-4xl min-h-[90vh] mx-auto bg-white p-8 rounded-lg shadow-md font-inria font-light mt-10">
+    <h1 class="font-display text-productTitle mb-5 text-3xl font-semibold">Edit Product:</h1>
+
+    <form class="space-y-2" *ngIf="products?.data" (ngSubmit)="updateProduct()">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Product Name -->
+        <div>
+          <div class="col-span-1">
+            <!-- name -->
+            <label   class="block text-sm font-medium text-ternaryText">Product Name</label>
+            <input
+            [(ngModel)]="products.data.name"
+            (ngModelChange)="onInputChange('name', $event)" 
+            [ngModelOptions]="{ standalone: true }" 
+            name="name"
+            value="name"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none" 
+            type="text" class="mt-1 block w-full px-3 py-2 border
+              border-gray-300 rounded-md shadow-sm focus:outline-none" />
+          </div>  
+        </div>
+
+
+
+        <!-- Product Category -->
+           
+        <div class="grid grid-cols-2 gap-4 col-span-1">
+          <div class="relative">
+            <label class="block text-sm sm:text-sm font-medium text-ternaryText whitespace-nowrap">Product Category</label>
+            <div class="relative">
+              <select
+               [(ngModel)]="products.data.category.name" 
+               (ngModelChange)="onInputChange('category', $event)" 
+               [ngModelOptions]="{ standalone: true }" 
+               name="category"
+               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm custom-select">
+                <option *ngFor="let cat of productCategories" [value]="products.data.category.name">{{ cat }}</option>
+
+              </select>
+
+              
+            
+              <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+            </div>
+          </div>
+
+          <div class="relative">
+            <label class="block text-sm font-medium text-ternaryText sm:text-sm">Product Subcategory</label>
+            <div class="relative">
+              <select 
+              [(ngModel)]="products.data.subCategory" 
+              (ngModelChange)="onInputChange('subCategory', $event)" 
+              [ngModelOptions]="{ standalone: true }"
+               name="subcategory" 
+               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none custom-select">
+                <option *ngFor="let sub of productSubcategories" [value]="products.data.subCategory">{{ sub }}</option>
+              </select>
+              <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+     
+ 
+   
+        <!-- Product Brand -->
+
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 col-span-1">
+            <div>
+              <label class="block text-sm font-medium text-ternaryText">Product brand</label>
+              <input
+               [(ngModel)]="products.data.brand" 
+               (ngModelChange)="onInputChange('brand', $event)"
+               [ngModelOptions]="{ standalone: true }"
+               name="brand" 
+               type="text"  class="mt-1 block w-full px-3 py-2 border
+               border-gray-300 rounded-md shadow-sm focus:outline-none" />
+            </div>
+
+
+
+
+        <!-- Product Price -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 col-span-1">
+          <div>
+            <label class="block text-sm font-medium text-ternaryText">Product Price</label>
+            <input 
+         
+             [(ngModel)]="products.data.price" 
+             (ngModelChange)="onInputChange('price', $event)"
+            [ngModelOptions]="{ standalone: true }"
+            name="price" [ngModelOptions]="{standalone: true}"
+            type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none" />
+          </div>
+
+          <!-- Product Material -->
+          <div>
+            <label class="block text-sm font-medium text-ternaryText">Product Material</label>
+            <div class="relative">
+              <select 
+              [(ngModel)]="products.data.material" 
+              (ngModelChange)="onInputChange('material', $event)" 
+              [ngModelOptions]="{ standalone: true }" 
+               name="material"
+               class="mt-1 block w-full px-3 py-2 border
+               border-gray-300 rounded-md shadow-sm focus:outline-none custom-select">
+                <option *ngFor="let sub of productMaterials" [value]="products.data.material">{{ sub }}</option>
+              </select>
+              <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+   <!-- size -->
+   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="relative col-span-1">
+      <label class="block text-sm font-medium text-ternaryText">Product Size</label>
+      <div class="relative">
+        <select 
+        [(ngModel)]="products.data.size_range" 
+        (ngModelChange)="onInputChange('size_range', $event)" 
+        [ngModelOptions]="{ standalone: true }"
+        name="size"
+         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none custom-select">
+          <option *ngFor="let sub of productSizes" [value]="sub">{{ sub }}</option>
+        </select>
+        <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+      </div>
+    </div>
+
+    <div class="relative col-span-2">
+      <label class="block text-sm font-medium text-ternaryText">Size Value</label>
+      <div class="mt-1 w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm flex items-center gap-4 h-12">
+        <div class="w-30 h-8 bg-mainColor border-inputColor border-1 text-textColor rounded-lg flex items-center justify-between p-3 gap-5" disabled>
+          <div class="flex gap-0">
+            <span>{{ products.data.size_range }}</span>
+          </div>
+          <img src="assets/images/exit.svg" class="h-5">
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- ! color -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="relative col-span-1">
+      <label class="block text-sm font-medium text-ternaryText">Product Color</label>
+      <div class="relative">
+        <select 
+        [(ngModel)]="products.data.color" 
+        (ngModelChange)="onInputChange('color', $event)"
+        [ngModelOptions]="{ standalone: true }"
+        name="color"
+        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none custom-select">
+          <option *ngFor="let sub of productColor" [value]="sub">{{ sub }}</option>
+        </select>
+        <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+      </div>
+    </div>
+
+    <div class="relative col-span-2">
+      <label class="block text-sm font-medium text-ternaryText">Color Value</label>
+      <div class="mt-1 w-full px-3 py-1 border border-gray-300 rounded-md shadow-sm flex items-center gap-4 h-12">
+        <div class="w-30 h-8 bg-textcolor border-inputColor border-1
+         text-white rounded-lg flex items-center justify-between p-3 gap-5" disabled>
+          <div class="flex gap-0">
+            <span> {{products.data.color}} </span>
+          </div>
+          <img src="assets/images/exit.svg" class="h-5">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-6 md:grid-cols-2 gap-4 w-full">
+    <div class="col-span-6 w-full">
+      <label class="block text-sm font-medium text-ternaryText">Image URL</label>
+      <input
+        
+        [(ngModel)]="products.data.imageUrl" 
+        (ngModelChange)="onInputChange('imageUrl', $event)" 
+        [ngModelOptions]="{ standalone: true }"
+        name="imageUrl"
+        placeholder="https://example.com/image.jpg"
+        type="text"
+        class="mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 px-3 py-2"
+      />
+    </div>
+  </div>
+  
+  
+<!-- description -->
+  <div>
+    <label class="block text-sm font-medium text-ternaryText">Description</label>
+    <textarea 
+    [(ngModel)]="products.data.description"
+    (ngModelChange)="onInputChange('Description', $event)" 
+    [ngModelOptions]="{standalone: true}"
+    name="description"
+     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none resize-none" rows="4"
+      placeholder="Top Men Sneakers Shoes in Cairo Egypt.."></textarea>
+  </div>
+<!-- submit button -->
+  <div class="flex justify-center">
+    <button type="submit" class="w-1/5 flex justify-center py-2 px-4 border 
+    border-transparent rounded-md shadow-sm text-sm font-medium text-white
+     bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer"
+    
+     >
+      Submit
+    </button>
+  </div>
+</form>
+</div>
+</div>
+<app-footer></app-footer>
+
+<div *ngIf="showSuccess" class="fixed top-0 left-0 right-0 z-50 bg-green-500 text-white py-2 px-4 text-center">
+  <p>{{ successMessage }}</p>
+</div>
+
+<div *ngIf="showError" class="fixed top-0 left-0 right-0 z-50 bg-red-500 text-white py-2 px-4 text-center">
+  <p>{{ errorMessage }}</p>
+</div>
+
+
+<div *ngIf="showWarning" class="fixed top-0 left-0 right-0 z-50 bg-yellow-500 text-white py-2 px-4 text-center">
+  <p>{{ warningMessage }}</p>
+</div>

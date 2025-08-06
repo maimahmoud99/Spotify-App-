@@ -1,0 +1,144 @@
+<div
+  class="bg-secondColor rounded-xl pb-4 capitalize mt-3 mb-3 h-auto w-fit transition-opacity"
+  [ngClass]="{ 'opacity-50': isOutOfStock() }"
+>
+  <div class="flex justify-center my-5">
+    <div
+      class="w-full h-[400px] cursor-pointer relative"
+      (click)="onImageClick($event)"
+    >
+      <!-- Badge حسب حالة المخزون -->
+      <span
+        *ngIf="isOutOfStock() || getLowStockMessage()"
+        class="absolute top-2 left-2 text-xs font-semibold px-8 py-3 rounded-full shadow-md"
+        [ngClass]="{
+          'bg-red-600 text-white font-bold': isOutOfStock(),
+          'bg-yellow-200 text-yellow-950':
+            !isOutOfStock() && getLowStockMessage()
+        }"
+      >
+        {{ isOutOfStock() ? "Out of Stock" : getLowStockMessage() }}
+      </span>
+
+      <!-- صورة المنتج -->
+      <img
+        [src]="data.imageUrl"
+        alt="Product Image"
+        class="rounded-t-xl w-full aspect-[4/3] h-[400px] object-cover border border-gray-200"
+        (error)="handleImageError($event)"
+      />
+    </div>
+  </div>
+  <div class="flex flex-row items-center justify-between mb-6 pl-5 pr-5">
+    <p class="text-[#3B3B3B] font-medium text-2xl text-center">
+      {{ data.name.split(" ").slice(0, 2).join(" ") }}
+    </p>
+    <p class="text-2xl font-bold text-[#3B3B3B] font-[Podkova]">
+      $ {{ data.price }}
+    </p>
+  </div>
+
+  <div class="flex items-center w-full px-4 gap-x-2 mt-6 pt-2">
+    <!-- <button
+      class="flex-1 rounded-xl p-2 px-4 transition-all cursor-pointer"
+      [ngClass]="{
+        'bg-mainColor text-white': !isAdded,
+        'bg-green-500 text-white': isAdded,
+        'opacity-50 cursor-not-allowed': isAdded
+      }"
+      [disabled]="isAdded"
+      (click)="addToCart()"
+    >
+      {{ isAdded ? "✔ Added!" : "Add to cart" }}
+    </button> -->
+    <button
+      class="flex-1 rounded-xl p-2 px-4 transition-all cursor-pointer"
+      [ngClass]="{
+        'bg-mainColor text-white': !isAdded && !isOutOfStock(),
+        'bg-green-500 text-white': isAdded,
+        'bg-gray-300 text-gray-500': isOutOfStock(),
+        'opacity-50 cursor-not-allowed': isAdded || isOutOfStock()
+      }"
+      [disabled]="isAdded || isOutOfStock()"
+      (click)="addToCart()"
+    >
+      {{
+        isOutOfStock() ? "Out of stock" : isAdded ? "✔ Added!" : "Add to cart"
+      }}
+    </button>
+
+    <div (click)="toggleFav()">
+      <div
+        class="w-10 h-10 border border-mainColor rounded-xl flex justify-center items-center cursor-pointer relative"
+      >
+        <i
+          class="fa-regular fa-heart text-xl transition-all duration-700"
+          [ngClass]="{
+            'opacity-0 scale-0': isFav,
+            'opacity-100 scale-100': !isFav
+          }"
+        ></i>
+        <i
+          class="fa-solid fa-heart text-red-700 text-xl absolute transition-all duration-700"
+          [ngClass]="{
+            'opacity-100 scale-100': isFav,
+            'opacity-0 scale-0': !isFav
+          }"
+        ></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  *ngIf="showLoginPrompt"
+  class="fixed inset-0 bg-opacity-50 flex justify-center items-center z-50"
+>
+  <!-- <div
+    class="bg-white p-6 rounded-xl shadow-xl text-center max-w-sm w-full flex flex-col justify-center items-center"
+  >
+    <p class="text-xl font-semibold text-gray-800 mb-4">Please log in first</p>
+
+    <div class="flex justify-center gap-4">
+      <button
+        class="bg-mainColor text-white px-4 py-2 rounded-lg transition hover:bg-opacity-90"
+        (click)="navigateToLogin()"
+      >
+        Log in
+      </button>
+
+      <button
+        class="border border-gray-400 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100"
+        (click)="showLoginPrompt = false"
+      >
+        Cancel
+      </button>
+    </div>
+  </div> -->
+
+  <div
+    class="fixed inset-0 flex justify-center items-center backdrop-blur-sm z-50"
+  >
+    <div class="bg-white p-8 rounded-lg shadow-lg w-3/4 md:w-1/3 text-center">
+      <h3 class="text-xl font-bold mb-4 text-[#454545]">
+        you are not logged in
+      </h3>
+      <p class="mb-6">To continue shopping, please log in to your account.</p>
+      <div class="flex justify-center gap-4">
+        <button
+          (click)="navigateToLogin()"
+          class="px-4 py-2 bg-mainColor text-[#454545] font-semibold rounded-lg hover:bg-[#abb165] hover:text-black transition"
+        >
+          Yes, Login
+        </button>
+        <button
+          (click)="showLoginPrompt = false"
+          class="px-4 py-2 bg-gray-300 text-[#454545] font-semibold rounded-lg hover:bg-gray-400 transition"
+        >
+          No, Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<app-header></app-header>
+
+<div class="space-y-4">
+  <div class="w-full min-h-[calc(100vh-160px)] flex items-center justify-center bg-secondColor p-4 md:p-12 lg:p-24 pt-30 sm:pt-0">
+    <div class="bg-white w-full max-w-3xl shadow-md rounded-2xl p-6 md:p-10 flex flex-col items-center justify-center">
+      <img src="assets/images/error.svg" alt="Error 404" class="w-full max-w-[150px] md:max-w-[180px]">
+      <h1 class="mt-4 pt-4 md:pt-4 font-display text-textColor text-2xl md:text-3xl lg:text-4xl font-medium text-center">
+        Oops! Something went wrong
+      </h1>
+      <p class="text-gray-500 my-2 text-center px-4 ">
+        {{ errorMessage }}
+      </p>
+      <button class="w-full md:w-1/2 lg:w-1/3 mt-6 bg-textColor hover:bg-opacity-90 font-inria text-white py-3 px-6 rounded-md font-extrabold transition-all duration-300 cursor-pointer"
+              (click)="backToHome()">
+        Back to Home
+      </button>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

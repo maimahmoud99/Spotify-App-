@@ -1,0 +1,47 @@
+<app-header></app-header>
+<app-loading *ngIf="loading" class="mt-10"></app-loading>
+
+<div
+  *ngIf="!loading"
+  class="bg-secondColor w-full ps-10 pr-10 pb-10 pt-5 flex justify-center md:h-1/2 lg:h-1/2"
+>
+  <div class="mt-8 w-full sm:mt-8 sm:w-md md:w-3/4 md:mt-0 lg:w-2xl">
+    <div class="h-auto mt-5 bg-white rounded-lg pt-5 pb-5 md:pt-10 md:pb-15">
+      <div
+        class="font-display flex flex-col mx-auto w-full gap-6 justify-center items-center"
+      >
+        <div class="flex justify-center items-center">
+          <img
+            src="assets/images/success_payment.svg"
+            class="w-1/2 md:w-full"
+          />
+        </div>
+
+        <p
+          class="px-5 sm:px-10 md:px-10 text-center md:text-xl text-[#454545] font-abhaya"
+        >
+          Payment successful! Your order will be shipped to
+          <span class="text-gold"
+            >{{ getShippingDetailsFromLocalStorage()?.address }}
+          </span>
+        </p>
+
+        <div class="flex w-1/3 md:w-50 lg:w-1/2 gap-4 md:mt-4">
+          <button
+            class="py-2 text-sm rounded-lg md:px-5 md:text-lg bg-mainColor w-full text-black cursor-pointer font-semibold md:rounded-xl hover:bg-[#abb165] hover:text-black transition"
+            (click)="TrackMyOrder()"
+          >
+            Track Order
+          </button>
+          <button
+            class="border font-inria border-[#454545] w-full text-[#454545] text-xl font-semibold rounded-xl hover:bg-[#2A2A2A] hover:text-white cursor-pointer"
+            (click)="successPayment()"
+          >
+            Go Home
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

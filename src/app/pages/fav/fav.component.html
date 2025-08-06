@@ -1,0 +1,32 @@
+<app-header></app-header>
+
+<div class="w-full overflow-x-auto whitespace-nowrap scroll-smooth scrollbar-hide">
+  <div class="w-[90%] mt-20 flex gap-4 mx-6 md:flex-wrap lg:flex-wrap lg:m-auto">
+
+    @if (isLoading) {
+      <div class="w-full flex justify-center items-center">
+        <app-loading></app-loading>
+      </div>
+    } @else {
+
+      @if (favorites.length > 0) {
+        @for (item of favorites; track item.id) {
+          <app-product-card 
+            class="w-[calc(110%-1rem)] md:w-[calc(50%-1rem)] lg:w-[calc(50%-1rem)] xl:w-[calc(33.33%-1rem)]"
+            [isFav]="true"
+            [data]="item"
+            (removedFromFavorites)="removeFromFavorites($event)">
+          </app-product-card>
+        }
+      } @else {
+        <div class="w-full h-96 flex m-auto items-center justify-center">
+          <p class="text-center font-bold text-4xl text-secandaryText">Favorite is Empty</p>
+        </div>
+      }
+
+    }
+
+  </div>
+</div>
+
+<app-footer></app-footer>

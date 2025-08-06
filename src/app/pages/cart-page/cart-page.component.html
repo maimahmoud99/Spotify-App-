@@ -1,0 +1,79 @@
+<app-header></app-header>
+<div class="space-y-4">
+  <div
+    class="w-full mx-auto p-4 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-4 bg-secondColor mb-0"
+  >
+    <div
+      class="bg-white w-full md:col-span-2 shadow-md rounded-2xl p-4 md:p-10 mt-9 md:mt-0"
+    >
+      @if (isLoading) {
+      <div class="w-full flex justify-center items-center">
+        <app-loading></app-loading>
+      </div>
+      } @else {
+      <div *ngIf="cartProducts.length > 0; else emptyCart">
+        <app-cart
+          *ngFor="let product of cartProducts"
+          [product]="product"
+          (productUpdated)="handleCartProductUpdate($event)"
+        >
+        </app-cart>
+      </div>
+
+      <ng-template #emptyCart>
+        <div class="flex flex-col items-center justify-center mt-3">
+          <img src="assets/images/emptyCaed.png" class="w-40 h-40 mb-4" />
+          <p class="text-gray-500 text-center text-lg">Cart is empty!</p>
+        </div>
+      </ng-template>
+
+      }
+    </div>
+
+    <div
+      class="bg-white w-full md:col-span-1 p-4 md:p-6 shadow-md rounded-2xl h-fit"
+    >
+      <h2 class="text-xl font-bold mb-4 font-inria text-cart">Order Summary</h2>
+
+      <div class="flex justify-between font-inria text-cart font-black mb-3">
+        <span>{{ totalItemsCount }} Items</span>
+      </div>
+
+      <div class="space-y-2 text-cart text-sm font-inria mb-4">
+        <div *ngFor="let item of cartProducts" class="flex justify-between">
+          <span>
+            {{ item.product.name }}
+            <span class="text-gray-500">({{ item.size || "No size" }})</span>
+          </span>
+          <span>× {{ item.quantity }}</span>
+        </div>
+      </div>
+
+      <div class="flex justify-between mt-2 font-inria text-cart font-bold">
+        <span>Total Price</span>
+        <span>${{ totalPrice }}</span>
+      </div>
+
+      <div class="flex justify-between mt-2 font-inria text-cart font-bold">
+        <span>Shipping</span>
+        <span>$16</span>
+      </div>
+
+      <div
+        class="border-t mt-4 pt-4 flex justify-between text-ternaryText font-inria font-extrabold"
+      >
+        <span>Total (including taxes)</span>
+        <span>${{ totalPrice + 16 }}</span>
+      </div>
+
+      <button
+        class="w-full mt-4 bg-mainColor font-inria text-textColor py-2 rounded-md font-extrabold cursor-pointer"
+        (click)="checkout()"
+      >
+        Checkout
+      </button>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

@@ -1,0 +1,186 @@
+<div class="flex flex-col md:grid md:grid-cols-2 md:m-auto w-[100%] md:w-[80%]  min-h-screen md:h-auto justify-center items-center">
+  <div class=" p-8 rounded-md bg-mainColor h-[90vh] md:flex md:flex-col items-center justify-center md:h-auto sm:h-auto hidden ">
+      <div class="flex flex-col ">
+      <div class="flex justify-center items-center gap-1">
+         <p class="text-[30px] sm:text-[40px] md:text-[50px] font-semibold text-center font-abhaya">Sportify</p>
+        <img src="assets/images/logo.svg" alt="" class="w-10 h-10 mt-8 ">
+      </div>
+      <img src="assets\images\manBall.svg" class="lg:w-100 lg:h-100 lg:m-auto md:mt-20 " alt="">
+      <div class="lg:w-75 lg:m-auto md:mt-20 "> <p class=" text-center  text-ternaryText font-abhaya">Join now to explore top sports gear and exclusive deals!</p></div>
+       </div>
+  </div>
+  <div class=" p-6 flex flex-col justify-center items-center w-full md:w-[80%] mx-auto"> 
+      <p class="lg:text-[30px] md:text-[25px] text-center font-bold font-abhaya mb-7">Create An Account</p>
+      <!-- <p class="lg:text-[12px] md:text-[9px] md:w-40 lg:w-65 text-center m-auto mb-7  text-secandaryText font-abhaya">Start exploring and utilizing all the best sports gear and deals. Sign up now</p> -->
+      <form  [formGroup]="signUpPage" (ngSubmit)="onSubmit()" class="w-full max-w-md">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 md:w-full mb-3">
+          <div class="flex flex-col w-full m-0">
+            <input 
+              type="text" 
+              placeholder="First Name" 
+              formControlName="firstName" 
+              class="w-full rounded-md p-2 border border-secandaryText  transition-all duration-300 focus:outline-none"
+              [ngClass]="{
+                'border-red-500 ring-2 ring-red-300': signUpPage.get('firstName')?.invalid && (signUpPage.get('firstName')?.dirty || signUpPage.get('firstName')?.touched)
+              }"
+            />
+            <div class="mb-3 h-[6px] transition-all duration-300"
+  [ngClass]="{
+    'visibility-visible opacity-100': signUpPage.get('firstName')?.invalid && (signUpPage.get('firstName')?.dirty || signUpPage.get('firstName')?.touched || submitted),
+    'visibility-hidden opacity-0': !(signUpPage.get('firstName')?.invalid && (signUpPage.get('firstName')?.dirty || signUpPage.get('firstName')?.touched || submitted))
+  }">
+  <small class="text-red-600 text-[11px]" *ngIf="signUpPage.get('firstName')?.errors?.['required']">First Name is required</small>
+  <small class="text-red-600 text-[11px]" *ngIf="signUpPage.get('firstName')?.errors?.['minlength']">You should write 3 letters or more</small>
+  <small class="text-red-600 text-[11px]" *ngIf="signUpPage.get('firstName')?.errors?.['pattern']">
+  Only letters are allowed
+</small>
+</div>
+
+          </div>
+          
+          <div class="flex flex-col w-full">
+            <input 
+              type="text" 
+              placeholder="Last Name" 
+              formControlName="lastName" 
+              class="w-full rounded-md p-2 border border-secandaryText transition-all duration-300  focus:outline-none"
+              [ngClass]="{
+                'border-red-500 ring-2 ring-red-300': signUpPage.get('lastName')?.invalid && (signUpPage.get('lastName')?.dirty || signUpPage.get('lastName')?.touched)
+              }"
+            />
+            <div class="mb-3 h-[6px] transition-all duration-300"
+            [ngClass]="{
+              'visibility-visible opacity-100': signUpPage.get('lastName')?.invalid && (signUpPage.get('lastName')?.dirty || signUpPage.get('lastName')?.touched || submitted),
+              'visibility-hidden opacity-0': !(signUpPage.get('lastName')?.invalid && (signUpPage.get('lastName')?.dirty || signUpPage.get('lastName')?.touched || submitted))
+            }">
+              <small class="text-red-600 text-[11px]" *ngIf="signUpPage.get('lastName')?.errors?.['required']">Last Name is required</small>
+              <small class="text-red-600 text-[11px]" *ngIf="signUpPage.get('lastName')?.errors?.['minlength']">You should write 3 letters or more</small>
+                <small class="text-red-600 text-[11px]" *ngIf="signUpPage.get('lastName')?.errors?.['pattern']">
+              Only letters are allowed
+             </small>
+            </div>
+          </div>
+        </div>
+          <input type="email" name="" id="" formControlName="email" placeholder="email" class="block rounded-[0.4vw]  p-2 border-1 border-secandaryText w-full focus:outline-none"
+          [ngClass]="{
+              'border-red-500 ring-2 ring-red-300': signUpPage.get('email')?.invalid && (signUpPage.get('email')?.dirty || signUpPage.get('email')?.touched)
+                  }"
+          >
+          <div class="mb-3 h-[17px] transition-all duration-300"
+          [ngClass]="{
+            'visibility-visible opacity-100': signUpPage.get('email')?.invalid && (signUpPage.get('email')?.dirty || signUpPage.get('email')?.touched || submitted),
+            'visibility-hidden opacity-0': !(signUpPage.get('email')?.invalid && (signUpPage.get('email')?.dirty || signUpPage.get('email')?.touched || submitted))
+          }">
+              <small class="text-red-600 text-[11px]" *ngIf="signUpPage.get('email')?.errors?.['required']">email is required</small>
+              <small class="text-red-600 text-[11px]" *ngIf="signUpPage.get('email')?.errors?.['pattern']">
+                Invalid Email
+              </small>
+              <!-- <small class="text-red-600 text-[11px]" *ngIf="signUpPage.get('email')?.errors?.['email']">you should write email structure</small> -->
+            </div>
+            <div class="relative">
+          <input [type]="isvisble?'text': 'password'" name="" id="" formControlName="password" placeholder="Password" class="relative block rounded-[0.4vw]  p-2 border-1 border-secandaryText w-full focus:outline-none"
+          [ngClass]="{
+              'border-red-500 ring-2 ring-red-300': signUpPage.get('password')?.invalid && (signUpPage.get('password')?.dirty || signUpPage.get('password')?.touched)
+                  }">
+                  <i class="absolute right-3 bottom-3.5"
+                  [ngClass]="isvisble?'fa fa-eye': 'fa fa-eye-slash'"
+                  (click)="toggleEye()"></i>
+            </div>      
+          <div class="mb-3 h-[17px] transition-all duration-300"
+          [ngClass]="{
+            'visibility-visible opacity-100': signUpPage.get('password')?.invalid && (signUpPage.get('password')?.dirty || signUpPage.get('password')?.touched || submitted),
+            'visibility-hidden opacity-0': !(signUpPage.get('password')?.invalid && (signUpPage.get('password')?.dirty || signUpPage.get('password')?.touched || submitted))
+          }">
+              <small class="text-red-600 text-[11px]" *ngIf="signUpPage.get('password')?.errors?.['required']">password is required</small>
+              <small class="text-red-600 text-[11px]" *ngIf="signUpPage.get('password')?.errors?.['minlength']">Password must be at least 8 characters long</small>
+            </div>
+            
+ <div class="relative">
+  <input [type]="isvisble2 ? 'text' : 'password'" 
+         formControlName="passwordConfirm" 
+         placeholder="Confirm Password"
+         class="block rounded-[0.4vw] p-2 border-1 border-secandaryText w-full focus:outline-none"
+         [ngClass]="{
+           'border-red-500 ring-2 ring-red-300': signUpPage.get('passwordConfirm')?.invalid && 
+                                                  (signUpPage.get('passwordConfirm')?.dirty || 
+                                                   signUpPage.get('passwordConfirm')?.touched)
+         }">
+  <i class="absolute right-3 bottom-3.5"
+     [ngClass]="isvisble2 ? 'fa fa-eye' : 'fa fa-eye-slash'"
+     (click)="toggleEye2()"></i>
+</div>
+
+<div class="mb-3 h-[17px] transition-all duration-300"
+     [ngClass]="{
+       'visibility-visible opacity-100': signUpPage.get('passwordConfirm')?.invalid &&
+                                          (signUpPage.get('passwordConfirm')?.dirty || 
+                                           signUpPage.get('passwordConfirm')?.touched || 
+                                           submitted),
+       'visibility-hidden opacity-0': !(signUpPage.get('passwordConfirm')?.invalid &&
+                                         (signUpPage.get('passwordConfirm')?.dirty || 
+                                          signUpPage.get('passwordConfirm')?.touched || 
+                                          submitted))
+     }">
+  <small class="text-red-600 text-[11px]"
+       *ngIf="signUpPage.get('passwordConfirm')?.errors?.['required'] &&
+              (signUpPage.get('passwordConfirm')?.value?.length === 0)">
+  Confirm password is required
+</small>
+
+<small class="text-red-600 text-[11px]"
+       *ngIf="!signUpPage.get('passwordConfirm')?.errors?.['required'] &&
+              signUpPage.get('passwordConfirm')?.errors?.['passwordsDoNotMatch'] &&
+              signUpPage.get('passwordConfirm')?.value?.length > 0">
+  Passwords do not match
+</small>
+
+</div>
+
+
+              
+<!--       
+            <button type="submit" class="bg-mainColor w-full rounded-[0.4vw] p-2 mb-4 cursor-pointer  duration-300 hover:-translate-y-2 " > 
+              Sign Up</button> -->
+              <button 
+  type="submit" 
+  class="bg-mainColor w-full rounded-[0.4vw] p-2 mb-4 cursor-pointer duration-300 hover:-translate-y-2 flex justify-center items-center"
+  [disabled]="isLoading"
+>
+  <ng-container *ngIf="!isLoading; else loading">
+    Sign Up
+  </ng-container>
+  <ng-template #loading>
+    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor"
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z">
+      </path>
+    </svg>
+  </ng-template>
+</button>
+
+            <!-- <div *ngIf="errorMsg">
+              <small class="text-red-600 text-[10px]">{{errorMsg}}</small>
+            </div> -->
+      </form>
+    
+  
+     
+      <p class="text-center font-abhaya text-ternaryText md:text-[15px]">Already Have an account? <a [routerLink]="['/login']" class="text-loginText hover:underline cursor-pointer">Log In</a></p>
+  </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+

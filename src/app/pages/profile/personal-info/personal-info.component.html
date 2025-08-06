@@ -1,0 +1,100 @@
+<div class="flex items-start gap-20">
+    <!-- <img  src="assets/images/profile.svg" width="100px" height="100px"> -->
+<div class="flex flex-col gap-20">
+    <div class="font-inter">
+        <p class="font-bold text-gold mb-5 text-2xl">Personal Information :</p>
+        <div class="flex gap-2 mt-3 items-center">
+            <p class="font-bold text-xl">Name : </p>
+            <p class="text-lg">{{ userData?.firstName}} {{ userData?.lastName }}</p>
+        </div>
+           <div class="flex gap-2 mt-3 items-center">
+            <p class="font-bold text-xl">Email : </p>
+            <p class="text-lg"> {{ userData?.email }} </p>
+        </div>
+    </div>
+
+<form (ngSubmit)="updateUserInfo()" class="font-inter" #formRef="ngForm"> 
+    
+<p class="font-bold text-gold  mb-5 text-2xl ">Edit Personal Information :</p>    
+<div class=" flex flex-col gap-5">  
+
+<div class="flex flex-col gap-1">
+<label class="font-semibold ">First Name</label>
+<label class="input validator ">
+  <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g
+      stroke-linejoin="round"
+      stroke-linecap="round"
+      stroke-width="2.5"
+      fill="none"
+      stroke="currentColor"
+    >
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+      <circle cx="12" cy="7" r="4"></circle>
+    </g>
+  </svg>
+  <input
+    type="text"
+    required
+    placeholder="Username"
+    pattern="[A-Za-z][A-Za-z0-9\-]*"
+    minlength="3"
+    maxlength="30"
+    title="Only letters, numbers or dash"
+    [(ngModel)]="editData.firstName"
+     name="firstName"
+    #firstNameModel="ngModel"
+  />
+</label>
+</div>
+
+<div class="flex flex-col gap-1">
+<label class="font-semibold ">Last Name</label>
+<label class="input validator">
+  <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g
+      stroke-linejoin="round"
+      stroke-linecap="round"
+      stroke-width="2.5"
+      fill="none"
+      stroke="currentColor"
+    >
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+      <circle cx="12" cy="7" r="4"></circle>
+    </g>
+  </svg>
+  <input
+    type="text"
+    required
+    placeholder="Last Name"
+    pattern="[A-Za-z][A-Za-z0-9\-]*"
+    minlength="3"
+    maxlength="30"
+    title="Only letters, numbers or dash"
+    [(ngModel)]="editData.lastName"
+     name="lastName"
+     #lastNameModel="ngModel"
+   
+  />
+</label>
+</div>
+<button class="btn bg-mainColor" type="submit" [disabled]="!isSomethingChanged() || hasInvalidInputs()">Update</button>
+<p class="validator-hint text-sm text-red-600" *ngIf="(firstNameModel.invalid && firstNameModel.touched) || (lastNameModel.invalid && lastNameModel.touched)">
+  Name Must be 3 to 30 characters<br />
+  containing only letters, numbers or dash
+</p>
+
+</div>
+</form>
+</div> 
+</div>
+
+<div
+  *ngIf="toastMessage"
+  class="toast toast-top toast-end z-50"
+>
+  <div class="alert" [ngClass]="toastType === 'success' ? 'alert-success' : 'alert-error'">
+    <span>{{ toastMessage }}</span>
+  </div>
+</div>
+
